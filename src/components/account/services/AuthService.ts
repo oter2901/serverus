@@ -1,7 +1,8 @@
-import { CreateAccountDTO } from '../dto/CreateAccountDTO';
 import { HttpException } from '@exceptions/HttpException';
 
+import { CreateAccountDTO } from '../dto/CreateAccountDTO';
 import { Account } from '../interfaces/AccountInterface';
+
 import { AccountService } from './AccountService';
 
 class AuthService {

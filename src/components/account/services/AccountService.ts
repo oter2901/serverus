@@ -1,6 +1,9 @@
+import { ACCOUNT_TOPIC, CREATED_EVENTS_SUFIX } from '@configs/KafkaConfig';
+import { notify } from '@utils/Notifier';
+import { hash } from 'bcrypt';
+
 import { CreateAccountDTO } from '../dto/CreateAccountDTO';
 import { AccountRepository } from '../repositories/AccountRepository';
-import { hash } from 'bcrypt';
 
 export class AccountService {
   private AccountRepository: AccountRepository;
@@ -12,8 +15,11 @@ export class AccountService {
     return await this.AccountRepository.findByEmail(email);
   }
 
-  public async createAccount(account: CreateAccountDTO) {
-    const hashedPassword = await hash(account.password, 10);
-    return await this.AccountRepository.create({ ...account, password: hashedPassword });
+  public async createAccount(accountData: CreateAccountDTO) {
+    const hashedPassword = await hash(accountData.password, 10);
+    const account = await this.AccountRepository.create({ ...accountData, password: hashedPassword });
+    notify(ACCOUNT_TOPIC, CREATED_EVENTS_SUFIX, account);
+
+    return account;
   }
 }

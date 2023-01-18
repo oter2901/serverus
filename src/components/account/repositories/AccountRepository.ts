@@ -1,6 +1,7 @@
-import { Accounts } from '../models/AccountModel';
-import { ACCOUNT_TABLE } from '@/configs/DBConfig';
 import { CreateAccountDTO } from '../dto/CreateAccountDTO';
+import { Accounts } from '../models/AccountModel';
+
+import { ACCOUNT_TABLE } from '@/configs/DBConfig';
 
 export class AccountRepository {
   private TABLE: string;

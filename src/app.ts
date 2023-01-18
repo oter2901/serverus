@@ -1,18 +1,18 @@
+import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@configs/AppConfig';
+import knex from '@databases/index';
+import { Routes } from '@interfaces/RouteInterface';
+import { logger, stream } from '@utils/Logger';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
+import errorMiddleware from 'middlewares/ErrorHandlerMiddleware';
 import morgan from 'morgan';
 import { Model } from 'objection';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@configs/AppConfig';
-import knex from '@databases/index';
-import { Routes } from '@interfaces/RouteInterface';
-import errorMiddleware from 'middlewares/ErrorHandlerMiddleware';
-import { logger, stream } from '@utils/Logger';
 
 class App {
   public app: express.Application;
@@ -74,6 +74,7 @@ class App {
           description: 'Example docs',
         },
       },
+      swaggerUrl: '../swagger/swagger.yaml',
       apis: ['swagger.yaml'],
     };
 

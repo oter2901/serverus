@@ -22,3 +22,9 @@ FROM common-build-stage as production-build-stage
 ENV NODE_ENV production
 
 CMD ["npm", "run", "start"]
+
+FROM common-build-stage as migrations-build-stage
+
+ENV ENV NODE_ENV development
+
+CMD ["npm", "run", "migrate"]

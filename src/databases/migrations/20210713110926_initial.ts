@@ -1,5 +1,7 @@
-import { ACCOUNT_TABLE } from '../../configs/DBConfig';
 import { Knex } from 'knex';
+
+import { ACCOUNT_TABLE } from '../../configs/DBConfig';
+console.log(process.env.PG_CONNECTION);
 
 export async function up(knex: Knex): Promise<void> {
   await knex.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');

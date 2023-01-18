@@ -1,8 +1,8 @@
-import App from '@/app';
 import { AuthRoute } from '@components/account/routes';
-
-import validateEnv from '@utils/validateEnv';
 import { logger } from '@utils/Logger';
+
+import App from '@/app';
+import validateEnv from '@/utils/validateEnv';
 
 validateEnv();
 

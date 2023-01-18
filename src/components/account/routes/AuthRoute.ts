@@ -1,9 +1,10 @@
-import { Router } from 'express';
 import { Routes } from '@interfaces/RouteInterface';
 import { validateIncomingData } from '@middlewares/SchemaValidator';
+import { Router } from 'express';
+import asyncHandler from 'express-async-handler';
 
-import * as AccountValidator from '../validators/AccountValidator';
 import AuthController from '../controllers/AuthController';
+import * as AccountValidator from '../validators/AccountValidator';
 
 export class AuthRoute implements Routes {
   public path = '/';
@@ -15,6 +16,6 @@ export class AuthRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.post('/signup', validateIncomingData(AccountValidator.create), this.authController.signUp);
+    this.router.post('/signup', validateIncomingData(AccountValidator.create), asyncHandler(this.authController.signUp));
   }
 }
