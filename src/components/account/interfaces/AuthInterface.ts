@@ -1,4 +1,5 @@
 import { Request } from 'express';
+
 import { Account } from './AccountInterface';
 
 export interface DataStoredInToken {

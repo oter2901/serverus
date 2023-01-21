@@ -1,0 +1,29 @@
+import BaseException from '@exceptions/BaseException';
+import { resourceNotFoundError } from '@exceptions/Errors';
+import _ from 'lodash';
+
+const buildResponse = (status: number, data: any) => ({ status, data });
+
+export const success = (data: any) => buildResponse(200, data);
+
+export const notFound = (data: any) => {
+  throw new BaseException({ data, status: 404, code: resourceNotFoundError.code, message: resourceNotFoundError.message });
+};
+
+export const resolveResponse = async (value: Promise<any>, options: { notFoundHandler?: typeof notFound; defaultResponse?: any } = {}) => {
+  const { notFoundHandler = notFound, defaultResponse = {} } = options;
+  const records = await value;
+
+  if (_.isEmpty(records)) {
+    return notFoundHandler(records);
+  }
+
+  return success(defaultResponse ?? records);
+};
+
+export const createResponse = async (value: Promise<any>, options: { defaultResponse?: any } = {}) => {
+  const { defaultResponse = {} } = options;
+  const records = await value;
+
+  return buildResponse(201, records || defaultResponse);
+};

@@ -1,4 +1,4 @@
-class BaseError extends Error {
+class BaseException extends Error {
   public code: number;
   public status: number;
   public data: {};
@@ -12,4 +12,4 @@ class BaseError extends Error {
   }
 }
 
-export default BaseError;
+export default BaseException;

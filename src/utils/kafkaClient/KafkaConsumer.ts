@@ -2,8 +2,10 @@ import { topicsByEntity } from '@configs/KafkaConfig';
 import { ConsumerConfig, Kafka } from 'kafkajs';
 import _ from 'lodash';
 
-import { logger } from '../Logger';
+import LoggerFactory from '../Logger';
 import { mapConcurrent } from '../PromiseUtils';
+
+const logger = new LoggerFactory(__filename);
 
 import { getClient, KafkaClientConfig } from './KafkaClient';
 

@@ -1,6 +1,8 @@
-import { NextFunction, Request, Response } from 'express';
 import { HttpException } from '@exceptions/HttpException';
-import { logger } from '@utils/Logger';
+import LoggerFactory from '@utils/Logger';
+import { NextFunction, Request, Response } from 'express';
+
+const logger = new LoggerFactory(__filename);
 
 const errorHandlerMiddleware = (error: HttpException, req: Request, res: Response, next: NextFunction) => {
   try {

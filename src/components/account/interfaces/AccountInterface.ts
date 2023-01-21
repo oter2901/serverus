@@ -2,48 +2,13 @@ export interface Account {
   id: number;
   email: string;
   password?: string;
-  external_type?: string;
-  external_id?: string;
-  status: string;
-  roles: string[];
-  sessions?: string[];
+  external_type?: string; // Should be related with auth types enum table
+  external_id?: string; // External API login (Like Google, facebook Github, ect)
+  status: string; //Current account state ex: (VERIFIED, EMAIL_VERIFICATION_PENDING, etc) it should be a enum reference to account_status table
+  roles: string[]; // Should be related to account_role table (Account may one role for profile and it may have many associeted profiles)
+  sessions?: string[]; //should be related to sessions table one account may have many sessions
 
   created_at: string;
   updated_at?: string;
   delete_at?: string;
 }
-
-// interface Account2 {
-//   id: string; //Required
-//   email: string;
-//   password: string;
-//   external_type: string; //relation with auth types tyble?
-//   external_id: string;
-//   status: enum; // status enum model
-//   roles: Model; // reference to roles table account may have one role for many profiles
-//   sessions: string; // reference to model session or ephemeral data on redis
-//   // timestamps
-//   created_at: Date;
-//   updated_at: Date;
-// }
-
-// interface account_role {
-//   id: string;
-//   account: Model; //reference to account table
-//   profiles: Model[]; // reference to profile table
-//   role: enum; //roles enum table for roles
-//   // timestamps
-//   created_at: Date;
-//   updated_at: Date;
-// }
-
-// ORGANIZATION AND END USERS PROFILE DATA
-// interface Profile {
-//   id: string;
-//   name: string;
-//   type: enum; // profile type enum table
-//   last_name?: string;
-//   avatar_url: string;
-//   created_at: Date;
-//   updated_at: Date;
-// }

@@ -11,7 +11,9 @@ import _ from 'lodash';
 
 import KafkaConsumer, { KafkaConsumerConfig } from './kafkaClient/KafkaConsumer';
 import KafkaProducer from './kafkaClient/KafkaProducer';
-import { logger } from './Logger';
+import LoggerFactory from './Logger';
+
+const logger = new LoggerFactory(__filename);
 
 const producersPerTopic = {};
 
@@ -20,7 +22,6 @@ const producerKey = (topicName: string) => `${PRODUCE_TOPIC_PREFIX}_${topicName}
 const getProducer = (topicName: string) => (PRODUCE_EVENTS ? _.get(producersPerTopic, topicName, null) : null);
 
 const startProducer = (topic: string, config = clientConfig) => {
-  console.log(config);
   if (!PRODUCE_EVENTS) return null;
   const producer = new KafkaProducer({ ...config, topic });
   const asyncProducerReference = new Promise(resolve => {

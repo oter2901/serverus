@@ -1,7 +1,7 @@
 import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@configs/AppConfig';
 import knex from '@databases/index';
 import { Routes } from '@interfaces/RouteInterface';
-import { logger, stream } from '@utils/Logger';
+import LoggerFactory from '@utils/Logger';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -13,6 +13,8 @@ import morgan from 'morgan';
 import { Model } from 'objection';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+
+const logger = new LoggerFactory(__filename);
 
 class App {
   public app: express.Application;
@@ -32,10 +34,8 @@ class App {
 
   public listen() {
     this.app.listen(this.port, () => {
-      logger.info(`=================================`);
       logger.info(`======= ENV: ${this.env} =======`);
       logger.info(`🚀 App listening on the port ${this.port}`);
-      logger.info(`=================================`);
     });
   }
 
@@ -48,7 +48,11 @@ class App {
   }
 
   private initializeMiddlewares() {
-    this.app.use(morgan(LOG_FORMAT, { stream }));
+    this.app.use(
+      morgan(LOG_FORMAT, {
+        stream: { write: message => logger.info(message.substring(0, message.lastIndexOf('\n'))) },
+      }),
+    );
     this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
     this.app.use(hpp());
     this.app.use(helmet());

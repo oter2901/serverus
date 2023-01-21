@@ -16,6 +16,10 @@ export class Accounts extends Model implements Account {
   created_at!: string;
   updated_at?: string;
   delete_at?: string;
+
+  static tableName = ACCOUNT_TABLE; // database table name
+  static idColumn = 'id'; // id column name
+
   $beforeInsert() {
     this.created_at = new Date().toISOString();
   }
@@ -23,8 +27,6 @@ export class Accounts extends Model implements Account {
   $beforeUpdate() {
     this.updated_at = new Date().toISOString();
   }
-  static tableName = ACCOUNT_TABLE; // database table name
-  static idColumn = 'id'; // id column name
 }
 
 export type AccountShape = ModelObject<Accounts>;
