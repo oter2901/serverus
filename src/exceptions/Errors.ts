@@ -1,8 +1,10 @@
 export const ValidationError = {
   message: 'Parameters sent are invalid',
-  code: 400,
+  code: 'VALIDATION_ERROR_400',
 };
-export const resourceNotFoundError = {
+export const ResourceNotFoundError = {
   message: 'Resource Not Found',
-  code: 404,
+  code: 'RESOURCE_NOT_FOUND_404',
 };
+
+export const EncryptionError = ValidationError;

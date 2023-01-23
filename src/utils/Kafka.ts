@@ -1,4 +1,6 @@
 /* eslint-disable no-param-reassign, max-lines */
+import _ from 'lodash';
+
 import {
   CONSUMER_TOPIC_PREFIX,
   PRODUCE_TOPIC_PREFIX,
@@ -6,14 +8,13 @@ import {
   CONSUME_EVENTS,
   commitIntervalSeconds,
   clientConfig,
-} from '@configs/KafkaConfig';
-import _ from 'lodash';
+} from '../configs/KafkaConfig';
 
 import KafkaConsumer, { KafkaConsumerConfig } from './kafkaClient/KafkaConsumer';
 import KafkaProducer from './kafkaClient/KafkaProducer';
 import LoggerFactory from './Logger';
 
-const logger = new LoggerFactory(__filename);
+const { logger } = new LoggerFactory('Kafka');
 
 const producersPerTopic = {};
 

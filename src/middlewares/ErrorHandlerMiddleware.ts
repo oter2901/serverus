@@ -1,19 +1,18 @@
-import { HttpException } from '@exceptions/HttpException';
-import LoggerFactory from '@utils/Logger';
 import { NextFunction, Request, Response } from 'express';
 
-const logger = new LoggerFactory(__filename);
+import { CustomError } from '../interfaces/CustomError';
+import LoggerFactory from '../utils/Logger';
 
-const errorHandlerMiddleware = (error: HttpException, req: Request, res: Response, next: NextFunction) => {
-  try {
-    const status: number = error.status || 500;
-    const message: string = error.message || 'Something went wrong';
+const { logger } = new LoggerFactory('ErrorHandlerMiddleware');
 
-    logger.error(`[${req.method}] ${req.path} >> StatusCode:: ${status}, Message:: ${message}`);
-    res.status(status).json({ message });
-  } catch (error) {
-    next(error);
-  }
-};
+export function handleError(err: CustomError, _req: Request, res: Response) {
+  const { status, validationErrors, ...rest } = err;
+  const response = validationErrors ? [...validationErrors] : [{ message: err.message, ...rest }];
 
-export default errorHandlerMiddleware;
+  res.status(status || 500).json(response);
+}
+
+export function logError(err: CustomError, _req: Request, _res: Response, next: NextFunction) {
+  logger.error(err);
+  next(err);
+}

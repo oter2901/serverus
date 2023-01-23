@@ -1,14 +1,17 @@
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
-import { LOG_DIR } from '@configs/AppConfig';
 import winston from 'winston';
 import winstonDaily from 'winston-daily-rotate-file';
+
+import { LOG_DIR } from '../configs/AppConfig';
 
 const logsDirectory: string = join(__dirname, LOG_DIR);
 const loggerInstances = new Map<string, LoggerFactory>();
 
-export default class LoggerFactory extends winston.Logger {
+export default class LoggerFactory {
+  public logger: winston.Logger;
+
   public static getInstance(label: string) {
     const instance = loggerInstances.get(label);
     if (instance) return instance;
@@ -16,8 +19,27 @@ export default class LoggerFactory extends winston.Logger {
     return new LoggerFactory(label);
   }
 
-  static getLoggerFormats = (label: string) => {
-    const formatLabel = winston.format.label({ label: label });
+  constructor(label: string) {
+    if (!existsSync(logsDirectory)) {
+      mkdirSync(logsDirectory);
+    }
+    this.logger = winston.createLogger({
+      format: this.getLoggerFormats(label),
+      transports: Object.values(this.getLoggerTransports()),
+    });
+    this.logger.add(
+      new winston.transports.Console({
+        format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
+      }),
+    );
+
+    loggerInstances.set(label, this);
+  }
+
+  private getLoggerFormats = (label: string) => {
+    const formatLabel = winston.format.label({
+      label: label,
+    });
     const formatTimestamp = winston.format.timestamp({
       format: 'YYYY-MM-DD HH:mm:ss',
     });
@@ -28,8 +50,8 @@ export default class LoggerFactory extends winston.Logger {
     return winston.format.combine(formatLabel, formatTimestamp, formatPrintf);
   };
 
-  static getLoggerTransports = () => [
-    new winstonDaily({
+  private getLoggerTransports = () => {
+    const debugTransport = new winstonDaily({
       level: 'debug',
       datePattern: 'YYYY-MM-DD',
       dirname: logsDirectory + '/debug',
@@ -37,9 +59,8 @@ export default class LoggerFactory extends winston.Logger {
       maxFiles: 30,
       json: false,
       zippedArchive: true,
-    }),
-
-    new winstonDaily({
+    });
+    const errorTransport = new winstonDaily({
       level: 'error',
       datePattern: 'YYYY-MM-DD',
       dirname: logsDirectory + '/error',
@@ -48,29 +69,7 @@ export default class LoggerFactory extends winston.Logger {
       handleExceptions: true,
       json: false,
       zippedArchive: true,
-    }),
-  ];
-
-  constructor(label: string) {
-    super({ format: LoggerFactory.getLoggerFormats(label), transports: LoggerFactory.getLoggerTransports() });
-    if (!existsSync(logsDirectory)) {
-      mkdirSync(logsDirectory);
-    }
-
-    this.add(
-      new winston.transports.Console({
-        format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
-      }),
-    );
-
-    loggerInstances.set(label, this);
-  }
-
-  public customStream() {
-    return {
-      write: (message: string) => {
-        this.info(message.substring(0, message.lastIndexOf('\n')));
-      },
-    };
-  }
+    });
+    return { debugTransport, errorTransport };
+  };
 }

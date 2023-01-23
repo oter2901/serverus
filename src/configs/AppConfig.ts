@@ -10,10 +10,12 @@ export const LOG_DIR = environment.LOG_DIR || '../logs';
 export const LOG_FORMAT = environment.LOG_FORMAT || 'dev';
 
 export const ORIGIN = environment.ORIGIN || '*';
-export const CREDENTIALS = String(environment.CREDENTIALS) === 'true' || false;
+export const CREDENTIALS = environment.CREDENTIALS === 'true' || false;
 
 export const SECRET_KEY = environment.SECRET_KEY || 'super-secret-key';
-export const PROMISE_CONCURRENCY = Number(environment.PROMISE_CONCURRENCY) || 10;
+export const PROMISE_CONCURRENCY = +environment.PROMISE_CONCURRENCY || 10;
+
+export const SALT_ROUNDS = +environment.SALT_ROUNDS || 10;
 
 export const REQUESTER = {
   userId: APP_NAME,

@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+import { CustomError } from '../interfaces/CustomError';
+
 import * as Errors from './Errors';
 
 const DEFAULT_KEYWORD = 'error';
@@ -24,7 +26,7 @@ const createFromKeyword = ({ params, message }) => {
   return { message: messageWithKey, data: {} };
 };
 
-const mapErrors = (errors: any[], code: number) =>
+const mapErrors = (errors: any[], code: string) =>
   errors.reduce((arrayResult, error) => {
     const { dataPath } = error;
 
@@ -33,13 +35,13 @@ const mapErrors = (errors: any[], code: number) =>
     return [...arrayResult, { code, ...errorObj }];
   }, []);
 
-class ValidationError extends Error {
+class ValidationError extends Error implements CustomError {
   public status: number;
-  public code: number;
+  public code: string;
   public message: string;
   public validationErrors: any[];
 
-  constructor(properties: { status?: 400; code?: number; errors?: any[] }) {
+  constructor(properties: { status?: 400; code?: string; errors?: any[] }) {
     const { status = 400, code = Errors.ValidationError.code, errors = [] } = properties;
     super(String(Errors.ValidationError.code));
     this.status = status;

@@ -1,5 +1,6 @@
-import { REQUESTER } from '@configs/AppConfig';
 import _ from 'lodash';
+
+import { REQUESTER } from '../configs/AppConfig';
 
 import { Producer } from './Kafka';
 

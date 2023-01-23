@@ -1,7 +1,7 @@
+import { ACCOUNT_TABLE } from '../../../configs/DBConfig';
 import { CreateAccountDTO } from '../dto/CreateAccountDTO';
+import { Account } from '../interfaces/AccountInterface';
 import { Accounts } from '../models/AccountModel';
-
-import { ACCOUNT_TABLE } from '@/configs/DBConfig';
 
 export class AccountRepository {
   private TABLE: string;
@@ -13,7 +13,7 @@ export class AccountRepository {
     return await Accounts.query().select().from(this.TABLE).where('email', '=', email).first();
   }
 
-  public async create(account: CreateAccountDTO) {
+  public async create(account: Account) {
     return await Accounts.query().insert(account).into(this.TABLE);
   }
 }

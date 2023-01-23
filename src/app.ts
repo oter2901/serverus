@@ -1,20 +1,20 @@
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@configs/AppConfig';
-import knex from '@databases/index';
-import { Routes } from '@interfaces/RouteInterface';
-import LoggerFactory from '@utils/Logger';
 import compression from 'compression';
+import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from 'configs/AppConfig';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import knex from 'databases/index';
 import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
-import errorMiddleware from 'middlewares/ErrorHandlerMiddleware';
+import { Routes } from 'interfaces/RouteInterface';
+import { handleError, logError } from 'middlewares/ErrorHandlerMiddleware';
 import morgan from 'morgan';
 import { Model } from 'objection';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import LoggerFactory from 'utils/Logger';
 
-const logger = new LoggerFactory(__filename);
+const { logger } = new LoggerFactory('Main');
 
 class App {
   public app: express.Application;
@@ -28,8 +28,8 @@ class App {
     this.connectToDatabase();
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
-    this.initializeSwagger();
     this.initializeErrorHandling();
+    this.initializeSwagger();
   }
 
   public listen() {
@@ -87,7 +87,8 @@ class App {
   }
 
   private initializeErrorHandling() {
-    this.app.use(errorMiddleware);
+    this.app.use(logError);
+    // this.app.use(handleError);
   }
 }
 

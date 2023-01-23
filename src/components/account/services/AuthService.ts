@@ -1,5 +1,4 @@
-import { HttpException } from '@exceptions/HttpException';
-
+import { HttpException } from '../../../exceptions/HttpException';
 import { CreateAccountDTO } from '../dto/CreateAccountDTO';
 import { Account } from '../interfaces/AccountInterface';
 
