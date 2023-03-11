@@ -1,5 +1,4 @@
 import { ACCOUNT_TABLE } from '../../../configs/DBConfig';
-import { CreateAccountDTO } from '../dto/CreateAccountDTO';
 import { Account } from '../interfaces/AccountInterface';
 import { Accounts } from '../models/AccountModel';
 

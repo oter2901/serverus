@@ -88,7 +88,7 @@ class App {
 
   private initializeErrorHandling() {
     this.app.use(logError);
-    // this.app.use(handleError);
+    this.app.use(handleError);
   }
 }
 
