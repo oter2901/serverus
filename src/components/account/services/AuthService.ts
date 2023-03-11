@@ -13,7 +13,7 @@ class AuthService {
 
   public async signup({ email, password }: CreateAccountDTO): Promise<Account> {
     const account: Account = await this.AccountService.findAccountByEmail(email);
-    if (account) throw new HttpException(409, `This email ${email} already exists`);
+    if (account) throw new HttpException(401, `This email ${email} already exists`);
     const createAccountData: Account = await this.AccountService.createAccount({ email, password });
 
     return createAccountData;
