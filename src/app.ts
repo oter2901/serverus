@@ -14,7 +14,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import LoggerFactory from 'utils/Logger';
 
-const { logger } = new LoggerFactory('Main');
+const { logger } = new LoggerFactory('App');
 
 class App {
   public app: express.Application;

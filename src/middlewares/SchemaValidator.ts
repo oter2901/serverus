@@ -3,7 +3,7 @@ import { RequestHandler, Request } from 'express';
 
 import ValidationError from '../exceptions/ValidationException';
 
-export const validateOrThrow = (validator: ValidateFunction, toValidate: {}) => {
+export const validateOrThrow = (validator: ValidateFunction, toValidate: {} = {}) => {
   if (!validator(toValidate)) {
     throw new ValidationError({
       errors: validator.errors,

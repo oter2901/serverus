@@ -1,4 +1,4 @@
-import { AuthRoute } from 'components/account/routes';
+import { AccountRoute } from 'components/account/routes';
 import LoggerFactory from 'utils/Logger';
 import validateEnv from 'utils/validateEnv';
 
@@ -8,7 +8,7 @@ import App from '@/app';
 
 validateEnv();
 
-const app = new App([new AuthRoute()]);
+const app = new App([new AccountRoute()]);
 app.listen();
 
 process.on('unhandledRejection', reason => {

@@ -7,9 +7,8 @@ import LoggerFactory from '../utils/Logger';
 const { logger } = new LoggerFactory('DatabaseErrorHandler');
 
 export function DatabaseErrorHandler(err: Error) {
-  logger.error(err);
-
   if (err instanceof NotNullViolationError) {
+    logger.error(err);
     return new BaseException({
       ...NotNullError,
       data: {

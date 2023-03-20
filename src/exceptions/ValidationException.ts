@@ -7,10 +7,10 @@ import * as Errors from './Errors';
 const DEFAULT_KEYWORD = 'error';
 
 const createFromDataPath = error => {
-  const { message, data, dataPath, params = {} } = error;
+  const { message, data, instancePath, params = {} } = error;
   const { allowedValues } = params;
 
-  const key = dataPath.replace('.', '');
+  const key = instancePath.replace('/', '');
   let messageWithKey = `${key}: ${message}`;
 
   if (!_.isEmpty(allowedValues)) {
@@ -28,14 +28,14 @@ const createFromKeyword = ({ params, message }) => {
 
 const mapErrors = (errors: any[], code: string) =>
   errors.reduce((arrayResult, error) => {
-    const { dataPath } = error;
+    const { instancePath } = error;
 
-    const errorObj = !dataPath || dataPath === '' ? createFromKeyword(error) : createFromDataPath(error);
+    const errorObj = !instancePath || instancePath === '' ? createFromKeyword(error) : createFromDataPath(error);
 
     return [...arrayResult, { code, ...errorObj }];
   }, []);
 
-class ValidationError extends Error implements CustomError {
+class ValidationException extends Error implements CustomError {
   public status: number;
   public code: string;
   public message: string;
@@ -51,8 +51,8 @@ class ValidationError extends Error implements CustomError {
   }
 
   static buildFromMessage(message: string) {
-    return new ValidationError({ errors: [{ keyword: DEFAULT_KEYWORD, message, params: {} }] });
+    return new ValidationException({ errors: [{ keyword: DEFAULT_KEYWORD, message, params: {} }] });
   }
 }
 
-export default ValidationError;
+export default ValidationException;

@@ -15,10 +15,7 @@ export const notFound = (data: any) => {
   });
 };
 
-export const resolveResponse = async (
-  value: Promise<any>,
-  options: { notFoundHandler?: typeof notFound; defaultResponse?: any } = {},
-) => {
+export const resolveResponse = async (value: Promise<any>, options: { notFoundHandler?: typeof notFound; defaultResponse?: any } = {}) => {
   const { notFoundHandler = notFound, defaultResponse = {} } = options;
   const records = await value;
 
@@ -30,7 +27,7 @@ export const resolveResponse = async (
 };
 
 export const createResponse = async (value: Promise<any>, options: { defaultResponse?: any } = {}) => {
-  const { defaultResponse = {} } = options;
+  const { defaultResponse = { data: null } } = options;
   const records = await value;
 
   return buildResponse(201, records || defaultResponse);

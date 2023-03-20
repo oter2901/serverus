@@ -45,8 +45,11 @@ export const notify = async (
   requester: typeof REQUESTER = REQUESTER,
   callBack?: (message: any, requester: typeof REQUESTER) => void,
 ) => {
-  await send(topic, suffix, message, requester, Producer.sendMessage, callBack);
-  // Todo add some logging here or metrics
+  const sent = await send(topic, suffix, message, requester, Producer.sendMessage, callBack);
+
+  if (sent) {
+    // Todo add some logging here or metrics
+  }
 };
 
 // implement notification sync for HTTP REQUEST notifications

@@ -3,4 +3,5 @@ export const ajvDefaultOptions = {
   coerceTypes: true,
   useDefaults: true,
   verbose: true,
+  strict: false,
 };

@@ -1,4 +1,4 @@
 export enum PROFILE_TYPES {
-  PERSONAL = 'PERSONAL',
-  BUSINESS = 'BUSINESS',
+  PERSONAL = 'personal',
+  BUSINESS = 'business',
 }

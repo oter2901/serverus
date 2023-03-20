@@ -2,6 +2,7 @@ export interface Account {
   id?: number;
   email: string;
   password?: string;
+  password_confirmation?: string;
   salt?: string;
   external_type?: string; // Should be related with auth types enum table
   external_id?: string; // External API login (Like Google, facebook Github, ect)
